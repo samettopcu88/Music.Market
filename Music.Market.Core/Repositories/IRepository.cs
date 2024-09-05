@@ -15,7 +15,7 @@ namespace Music.Market.Core.Repositories
         Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> filter);
         Task AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
-        void Remove(T entity);
+        void RemoveAsync(T entity);
         void RemoveRange(IEnumerable<T> entities);
 
     }
