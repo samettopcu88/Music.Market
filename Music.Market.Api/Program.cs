@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Music.Market.Core;
+using Music.Market.Data;
 
 namespace Music.Market.Api
 {
@@ -8,8 +11,15 @@ namespace Music.Market.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<MusicMarketDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
