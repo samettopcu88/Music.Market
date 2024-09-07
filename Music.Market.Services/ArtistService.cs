@@ -16,7 +16,6 @@ namespace Music.Market.Services
         public async Task<Artist> CreateArtist(Artist newArtist)
         {
             await unitOfWork.Artists.AddAsync(newArtist);
-            unitOfWork.CommitAsync();
             return newArtist;
         }
 

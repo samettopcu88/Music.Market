@@ -12,6 +12,10 @@ namespace Music.Market.Services
     {
         private readonly IUnitOfWork unitOfWork;
 
+        public MusicService(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
         public async Task<Core.Models.Music> CreateMusic(Core.Models.Music newMusic)
         {
             await unitOfWork.Musics.AddAsync(newMusic);

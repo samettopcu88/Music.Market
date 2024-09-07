@@ -11,7 +11,7 @@ using Music.Market.Data;
 namespace Music.Market.Data.Migrations
 {
     [DbContext(typeof(MusicMarketDbContext))]
-    [Migration("20240905134848_Initial")]
+    [Migration("20240907222727_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
