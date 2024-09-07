@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Music.Market.Core;
+using Music.Market.Core.Services;
 using Music.Market.Data;
+using Music.Market.Services;
 
 namespace Music.Market.Api
 {
@@ -18,6 +20,8 @@ namespace Music.Market.Api
             });
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddTransient<IMusicService, MusicService>();
+            builder.Services.AddTransient<IArtistService, ArtistService>();
 
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
