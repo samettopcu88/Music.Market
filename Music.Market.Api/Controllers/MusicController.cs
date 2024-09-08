@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Music.Market.Api.DTO;
+using Music.Market.Api.Validations;
 using Music.Market.Core.Services;
 
 namespace Music.Market.Api.Controllers
@@ -33,6 +34,28 @@ namespace Music.Market.Api.Controllers
         {
             var music = await musicService.GetMusicById(id);
             var musicResource = mapper.Map<Core.Models.Music, MusicDTO>(music);
+            return Ok(musicResource);
+        }
+
+        [HttpPost]
+
+        [HttpPost]
+        public async Task<ActionResult<MusicDTO>> CreateMusic([FromBody] SaveMusicDTO saveMusicResource)
+        {
+            var validator = new SaveMusicResourceValidator();
+            var validationResult = await validator.ValidateAsync(saveMusicResource);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var musicToCreate = mapper.Map<SaveMusicDTO, Core.Models.Music>(saveMusicResource);
+
+            var newMusic = await musicService.CreateMusic(musicToCreate);
+
+            var music = await musicService.GetMusicById(newMusic.Id);
+
+            var musicResource = mapper.Map<Core.Models.Music, MusicDTO>(music);
+
             return Ok(musicResource);
         }
     }
