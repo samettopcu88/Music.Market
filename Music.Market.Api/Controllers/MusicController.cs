@@ -38,8 +38,6 @@ namespace Music.Market.Api.Controllers
         }
 
         [HttpPost]
-
-        [HttpPost]
         public async Task<ActionResult<MusicDTO>> CreateMusic([FromBody] SaveMusicDTO saveMusicResource)
         {
             var validator = new SaveMusicResourceValidator();
@@ -57,6 +55,23 @@ namespace Music.Market.Api.Controllers
             var musicResource = mapper.Map<Core.Models.Music, MusicDTO>(music);
 
             return Ok(music);
+        }
+
+        [HttpDelete]
+
+        public async Task<ActionResult<MusicDTO>> DeleteMusic(int id)
+        {
+            if (id == 0)
+                return BadRequest();
+
+            var music = await musicService.GetMusicById(id);
+
+            if (music == null)
+                return NotFound();
+
+            await musicService.DeleteMusic(music);
+
+            return NoContent();
         }
     }
 }
