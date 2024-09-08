@@ -58,7 +58,6 @@ namespace Music.Market.Api.Controllers
         }
 
         [HttpDelete]
-
         public async Task<ActionResult<MusicDTO>> DeleteMusic(int id)
         {
             if (id == 0)
@@ -74,6 +73,33 @@ namespace Music.Market.Api.Controllers
             var musicResource = mapper.Map<Core.Models.Music, MusicDTO>(music);
 
             return Ok(musicResource);
+        }
+
+        [HttpPut("{id}")]
+
+        public async Task<ActionResult<MusicDTO>> UpdateMusic(int id, [FromBody] SaveMusicDTO saveMusicResource)
+        {
+            var validator = new SaveMusicResourceValidator();
+            var validationResult = await validator.ValidateAsync(saveMusicResource);
+
+            var requestIsInvalid = id == 0 || !validationResult.IsValid;
+
+            if (requestIsInvalid)
+                return BadRequest(validationResult.Errors);
+
+            var musicToBeUpdate = await musicService.GetMusicById(id);
+
+            if (musicToBeUpdate == null)
+                return NotFound();
+
+            var music = mapper.Map<SaveMusicDTO, Core.Models.Music>(saveMusicResource);
+
+            await musicService.UpdateMusic(musicToBeUpdate, music);
+
+            var updatedMusic = await musicService.GetMusicById(id);
+            var updatedMusicResource = mapper.Map<Core.Models.Music, MusicDTO>(updatedMusic);
+
+            return Ok(updatedMusicResource);
         }
     }
 }
