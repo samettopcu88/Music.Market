@@ -56,7 +56,7 @@ namespace Music.Market.Api.Controllers
 
             var musicResource = mapper.Map<Core.Models.Music, MusicDTO>(music);
 
-            return Ok(musicResource);
+            return Ok(music);
         }
     }
 }
