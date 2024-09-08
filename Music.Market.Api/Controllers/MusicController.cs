@@ -71,7 +71,9 @@ namespace Music.Market.Api.Controllers
 
             await musicService.DeleteMusic(music);
 
-            return NoContent();
+            var musicResource = mapper.Map<Core.Models.Music, MusicDTO>(music);
+
+            return Ok(musicResource);
         }
     }
 }
